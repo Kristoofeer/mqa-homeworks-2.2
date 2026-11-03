@@ -68,14 +68,20 @@ class ChangeTextTest {
         waitForPackage(packageName)
         Thread.sleep(1000)
 
+        // 1. Запоминаем текущий текст (до ввода)
+        val textBefore = device.findObject(By.res(packageName, "textToBeChanged")).text
+
+        // 2. Устанавливаем пустую строку (пробелы)
         device.findObject(By.res(packageName, "userInput")).text = "   "
         Thread.sleep(500)
 
+        // 3. Нажимаем на кнопку изменения
         device.findObject(By.res(packageName, "buttonChange")).click()
         Thread.sleep(500)
 
-        val result = device.findObject(By.res(packageName, "textToBeChanged")).text
-        assertEquals("Привет, UiAutomator!", result)
+        // 4. Проверяем, что текст НЕ изменился
+        val textAfter = device.findObject(By.res(packageName, "textToBeChanged")).text
+        assertEquals(textBefore, textAfter)
     }
 
     @Test
